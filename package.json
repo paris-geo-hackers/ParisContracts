@@ -20,5 +20,8 @@
   },
   "dependencies": {
     "@uma/core": "^2.56.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.9.2"
   }
 }
