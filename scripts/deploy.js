@@ -1,27 +1,13 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
-// will compile your contracts, add the Hardhat Runtime Environment's members to the
-// global scope, and execute the script.
-const hre = require("hardhat");
+require("hardhat");
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
+// Deploy the oracle with WMATIC as currency on the sandboxed contract on Mumbai 
+  const oracle = await ethers.deployContract("OOV3_SettleWinner", ["0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889", 20, "0xAfAE2dD69F115ec26DFbE2fa5a8642D94D7Cd37E"]);
 
-  const lockedAmount = hre.ethers.parseEther("0.001");
-
-  const lock = await hre.ethers.deployContract("Lock", [unlockTime], {
-    value: lockedAmount,
-  });
-
-  await lock.waitForDeployment();
+  await oracle.waitForDeployment();
 
   console.log(
-    `Lock with ${ethers.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.target}`
+    `Oracle contract deployed to ${oracle.target}`
   );
 }
 
