@@ -5,6 +5,10 @@ require("@nomicfoundation/hardhat-toolbox");
 module.exports = {
   solidity: "0.8.16",
   networks: {
+    goerli: {
+      url: `https://goerli.infura.io/v3/${process.env.INFURA_API_KEY}`,
+      accounts: [process.env.PRIVATE_KEY],
+    },
     polygonMumbai: {
       url: `https://rpc.eu-north-1.gateway.fm/v4/polygon/non-archival/mumbai`,
       accounts: [process.env.PRIVATE_KEY],
@@ -34,6 +38,7 @@ module.exports = {
   },
   etherscan: {
     apiKey: {
+      goerli: process.env.POLYGON_API_KEY,
       polygonMumbai: process.env.POLYGON_API_KEY,
       mantle: process.env.MANTLE_API_KEY,
     },

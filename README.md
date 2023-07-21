@@ -11,11 +11,12 @@ npx hardhat run scripts/deploy.ts --network polygonMumbai
 
 # Deployment contracts
 
-Polygon Mumbai testnet: 
-Polygon zkEMV testnet: insufficient funds
-Mantle testnet: error
+Goerli testnet: 0x123a40a856d4a009Bb709c7828355C8Bc7309b57
+Polygon Mumbai testnet: 0x19d148f4C326A01D107096b2C4a9Cd024E36A94c
+Polygon zkEMV testnet: 0x7EeBF5cCe9911765C6a9478aB9251f92f30Ff4db
+Mantle testnet: TODO: error
 Gnosis Chiado testnet: 0x7EeBF5cCe9911765C6a9478aB9251f92f30Ff4db
-Linea testnet: insufficient funds
+Linea testnet: 0x7EeBF5cCe9911765C6a9478aB9251f92f30Ff4db
 Celo testnet: 0x7EeBF5cCe9911765C6a9478aB9251f92f30Ff4db
 
 

@@ -31,6 +31,7 @@ mapping(bytes => bytes32) private _assertionIdByQuestId;
 
     function assertTruth(
         bytes calldata _claim,
+        uint256 _bondValue,
         bytes calldata _questId
     ) public {
         bytes32 assertionId = _oov3.assertTruth(
@@ -40,7 +41,7 @@ mapping(bytes => bytes32) private _assertionIdByQuestId;
             address(0), // escalationManager
             defaultLiveness,
             defaultCurrency,
-            _oov3.getMinimumBond(address(defaultCurrency)),
+            _bondValue,
             _defaultIdentifier,
             bytes32(0) // domainId
         );
