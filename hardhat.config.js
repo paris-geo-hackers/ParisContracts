@@ -25,6 +25,10 @@ module.exports = {
       url: `https://rpc.public.zkevm-test.net`,
       accounts: [process.env.PRIVATE_KEY],
     },
+    gnosis: {
+      url: "https://rpc.gnosis.gateway.fm",
+      accounts: [process.env.PRIVATE_KEY],
+    },
     chiado: {
       url: "https://rpc.chiadochain.net",
       gasPrice: 1000000000,

@@ -35,6 +35,7 @@ contract Game is Ownable {
         address creator;
         uint256 questId;
         string questName;
+        string description;
         address[] registeredPlayers;
         uint256 numberOfPlayers;
         string location;
@@ -97,10 +98,11 @@ contract Game is Ownable {
 // *    Quest functions                  *
 // ***************************************
 
-    function viewQuest(uint256 _questId) public view returns(address creator, string memory questName, string memory location, address[] memory players, uint256 numberOfPlayers,
+    function viewQuest(uint256 _questId) public view returns(address creator, string memory questName, string memory description, string memory location, address[] memory players, uint256 numberOfPlayers,
     uint256 questPrize, uint256 creatorFee, string memory questStatus, address winner, bool payoutCompleted) {
         creator = questList[_questId].creator;
         questName = questList[_questId].questName;
+        description = questList[_questId].description;
         location = questList[_questId].location;
         players = questList[_questId].registeredPlayers;
         numberOfPlayers = questList[_questId].numberOfPlayers;
@@ -122,9 +124,9 @@ contract Game is Ownable {
         return (questList[_questId].questPrize /  questList[_questId].numberOfPlayers);
     }
 
-    function createQuest(string memory _questName, string memory _location, string memory _zkCoordinates, uint256 _numberOfPlayer, uint256 _questPrize, uint256 _creatorFee) public {
+    function createQuest(string memory _questName, string memory description, string memory _location, string memory _zkCoordinates, uint256 _numberOfPlayer, uint256 _questPrize, uint256 _creatorFee) public {
         
-        questList[nextQuestId] = Quest(msg.sender, nextQuestId, _questName, new address[](0), _numberOfPlayer, _location, _zkCoordinates, _questPrize, _creatorFee, "OPEN", address(0), false);
+        questList[nextQuestId] = Quest(msg.sender, nextQuestId, _questName, description, new address[](0), _numberOfPlayer, _location, _zkCoordinates, _questPrize, _creatorFee, "OPEN", address(0), false);
         nextQuestId = nextQuestId + 1;
     }
 
@@ -137,7 +139,7 @@ contract Game is Ownable {
         }
     }
 
-    function submitSolution(uint256 _questId, string calldata _solution, string calldata _proofPhotoUrl) external {//isStarted(_questId) isJoined(_questId) {
+    function submitSolution(uint256 _questId, string calldata _solution, string calldata _proofPhotoUrl) external isStarted(_questId) isJoined(_questId) {
         // TODO: if statement verifies zkproof solution
         if (true){
             closeQuest(_questId, msg.sender);
@@ -173,22 +175,21 @@ contract Game is Ownable {
         uint256 _questId
     ) public {
         bytes32 assertionId = _oov3.assertTruth(
-            abi.encodePacked(_claimLocation),
+            bytes(abi.encodePacked(_claimLocation, _claimPhotoUrl)),
             address(this), // asserter
             address(0), // callbackRecipient
             address(0), // escalationManager
             liveness,
             currency,
-            _bondValue,
-            defaultIdentifier,
+            0, //bond set to 0 
+            bytes32(defaultIdentifier),
             bytes32(0) // domainId
         );
 
         assertionIdByQuestId[_questId] = assertionId;
     }
 
-    // Only winner is allowed to settle, this implicitly assures the quest is completed. 
-    function settleAssertion(uint256 _questId) external isWinner(_questId){
+    function settleAssertion(uint256 _questId) external {
         _oov3.settleAssertion(getAssertionIdByQuestId(_questId));
     }
 
@@ -214,6 +215,48 @@ contract Game is Ownable {
         
     }
 
+
+    // ========================================
+    //     HELPER FUNCTIONS
+    // ========================================
+
+    function createFinalClaimAssembly(
+        string memory claim,
+        string memory photo
+    ) private pure returns (bytes memory) {
+        bytes memory claimBytes = bytes(claim);
+        bytes memory photoBytes = bytes(photo);
+        bytes memory mergedBytes = new bytes(claimBytes.length + claimBytes.length);
+
+        assembly {
+            let length1 := mload(claimBytes)
+            let length2 := mload(photoBytes)
+            let dest := add(mergedBytes, 32) // Skip over the length field of the dynamic array
+
+            // Copy claim to mergedBytes
+            for {
+                let i := 0
+            } lt(i, length1) {
+                i := add(i, 32)
+            } {
+                mstore(add(dest, i), mload(add(claimBytes, add(32, i))))
+            }
+
+            // Copy photo to mergedBytes
+            for {
+                let i := 0
+            } lt(i, length2) {
+                i := add(i, 32)
+            } {
+                mstore(
+                    add(dest, add(length1, i)),
+                    mload(add(photoBytes, add(32, i)))
+                )
+            }
+
+            mstore(mergedBytes, add(length1, length2))
+        }
+
+        return mergedBytes;
+    }
 }
-
-
