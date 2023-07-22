@@ -1,16 +1,32 @@
-require("hardhat");
 
+const { ethers } = require("hardhat");
+require('dotenv').config({ path: __dirname + '/.env' });
 
-const apecoin = "0x328507DC29C95c170B56a1b3A758eB7a9E73455c" // Goerli apecoin
+// // Deployment commands to run:
+// yarn run ts-node --files .\scripts\deploy.js "0x328507DC29C95c170B56a1b3A758eB7a9E73455c" "200" "0x9923D42eF695B5dd9911D05Ac944d4cAca3c4EAB" --network goerli
+// yarn run ts-node --files .\scripts\deploy.js "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889" "200" "0xAfAE2dD69F115ec26DFbE2fa5a8642D94D7Cd37E" --network polygonMumbai
 
 async function main() {
-// Deploy the oracle with WMATIC as currency on the sandboxed contract on Mumbai 
-  const oracle = await ethers.deployContract("OOV3_SettleWinner", ["0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889", 200, "0xAfAE2dD69F115ec26DFbE2fa5a8642D94D7Cd37E"]);
-  await oracle.waitForDeployment();
+
+  // const args = process.argv;
+  // const game = await ethers.deployContract("Game", [args[2], args[3], args[4]]);
+  // console.log(args[2]);
+  // console.log(args[3]);
+  // console.log(args[4]);
+
+  const game = await ethers.deployContract("Game", ["0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889", 200, "0xAfAE2dD69F115ec26DFbE2fa5a8642D94D7Cd37E"]);
+
+  await game.waitForDeployment();
+ 
 
   console.log(
-    `Oracle contract deployed to ${oracle.target}`
+    `Contract deployed to ${game.target} . Run the script below to verify.`
   );
+
+  console.log(
+    `npx hardhat verify --network networkname ${game.target} ${args[2]} ${args[3]} ${args[4]}`
+  )
+  
 }
 
 // We recommend this pattern to be able to use async/await everywhere

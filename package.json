@@ -23,6 +23,10 @@
     "@openzeppelin/contracts": "^4.9.2",
     "@quicknode/sdk": "^1.1.0",
     "@uma/core": "^2.56.0",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "solidity-string-utils": "^0.0.8-0"
+  },
+  "scripts": {
+    "deploy-polygon": "ts-node --files ./scripts/deploy.js '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889' '200' '0xAfAE2dD69F115ec26DFbE2fa5a8642D94D7Cd37E' --network polygonMumbai"
   }
 }
