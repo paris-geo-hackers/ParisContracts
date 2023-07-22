@@ -46,6 +46,13 @@ contract Game is Ownable {
         bool payoutCompleted;
     }
 
+    struct Coordinates {
+        uint256 left;
+        uint256 right;
+        uint256 top;
+        uint256 bottom;
+    }
+
 // ***************************************
 // *    Modifiers                        *
 // ***************************************
@@ -90,39 +97,20 @@ contract Game is Ownable {
 // *    Quest functions                  *
 // ***************************************
 
-    function getQuestCreator(uint256 _questId) public view returns(address) {
-        return questList[_questId].creator;
+    function viewQuest(uint256 _questId) public view returns(address creator, string memory questName, string memory location, address[] memory players, uint256 numberOfPlayers,
+    uint256 questPrize, uint256 creatorFee, string memory questStatus, address winner, bool payoutCompleted) {
+        creator = questList[_questId].creator;
+        questName = questList[_questId].questName;
+        location = questList[_questId].location;
+        players = questList[_questId].registeredPlayers;
+        numberOfPlayers = questList[_questId].numberOfPlayers;
+        questPrize = questList[_questId].questPrize;
+        creatorFee = questList[_questId].creatorFee;
+        questStatus = questList[_questId].questStatus;
+        winner = questList[_questId].winner;
+        payoutCompleted = questList[_questId].payoutCompleted;
     }
-    function getQuestName(uint256 _questId) public view returns(string memory) {
-        return questList[_questId].questName;
-    }
-    function getQuestLocation(uint256 _questId) public view returns(string memory) {
-        return questList[_questId].location;
-    }
-    function getQuestPlayers(uint256 _questId) public view returns(address[] memory) {
-        return questList[_questId].registeredPlayers;
-    }
-    function getQuestNumberOfPlayers(uint256 _questId) public view returns(uint256) {
-        return questList[_questId].numberOfPlayers;
-    }
-    function getQuestNumberOfRegisteredPlayers(uint256 _questId) public view returns(uint256) {
-        return questList[_questId].registeredPlayers.length;
-    }
-    function getQuestprize(uint256 _questId) public view returns(uint256) {
-        return questList[_questId].questPrize;
-    }
-    function getQuestFee(uint256 _questId) public view returns(uint256) {
-        return questList[_questId].creatorFee;
-    }
-    function getQuestStatus(uint256 _questId) public view returns(string memory) {
-        return questList[_questId].questStatus;
-    }
-    function getQuestWinner(uint256 _questId) public view returns(address) {
-        return questList[_questId].winner;
-    }
-    function getQuestPayoutCompleted(uint256 _questId) public view returns(bool) {
-        return questList[_questId].payoutCompleted;
-    }
+
     function isPlayerIsJoined(uint256 _questId, address player) public view returns(bool) {
         for (uint i = 0; i < questList[_questId].registeredPlayers.length; i++) {
             if (questList[_questId].registeredPlayers[i] == player) {
@@ -137,17 +125,19 @@ contract Game is Ownable {
     function createQuest(string memory _questName, string memory _location, string memory _zkCoordinates, uint256 _numberOfPlayer, uint256 _questPrize, uint256 _creatorFee) public {
         
         questList[nextQuestId] = Quest(msg.sender, nextQuestId, _questName, new address[](0), _numberOfPlayer, _location, _zkCoordinates, _questPrize, _creatorFee, "OPEN", address(0), false);
-        nextQuestId = nextQuestId + 1;}
+        nextQuestId = nextQuestId + 1;
+    }
 
-    function joinQuest(uint256 _questId) external isOpen(_questId) isJoined(_questId) {
-        require(currency.transferFrom(msg.sender, address(this), getPlayerCost(_questId)));
+    function joinQuest(uint256 _questId) external isOpen(_questId) isNotJoined(_questId) {
+        // require(currency.transferFrom(msg.sender, address(this), getPlayerCost(_questId)));
+        currency.transferFrom(msg.sender, address(this), getPlayerCost(_questId));
         questList[_questId].registeredPlayers.push(msg.sender);
         if (questList[_questId].registeredPlayers.length == questList[_questId].numberOfPlayers) {
             questList[_questId].questStatus = "STARTED";
         }
     }
 
-    function submitSolution(uint256 _questId, string calldata _solution, string calldata _proofPhotoUrl) external isStarted(_questId) isJoined(_questId) {
+    function submitSolution(uint256 _questId, string calldata _solution, string calldata _proofPhotoUrl) external {//isStarted(_questId) isJoined(_questId) {
         // TODO: if statement verifies zkproof solution
         if (true){
             closeQuest(_questId, msg.sender);
@@ -158,8 +148,8 @@ contract Game is Ownable {
         }
     }
 
-    function closeQuest(uint256 _questId, address _winner) private {
-        require(currency.transfer(questList[_questId].creator, questList[_questId].creatorFee));
+    function closeQuest(uint256 _questId, address _winner) public {
+        // require(currency.transfer(questList[_questId].creator, questList[_questId].creatorFee));
         questList[_questId].questStatus = "FINISHED";
         questList[_questId].winner = _winner;
     }
@@ -172,7 +162,6 @@ contract Game is Ownable {
         }
     }
 
-
 // ***************************************
 // *    UMA functions                    *
 // ***************************************
@@ -182,7 +171,7 @@ contract Game is Ownable {
         string calldata _claimPhotoUrl,
         uint256 _bondValue,
         uint256 _questId
-    ) private {
+    ) public {
         bytes32 assertionId = _oov3.assertTruth(
             abi.encodePacked(_claimLocation),
             address(this), // asserter
@@ -214,6 +203,15 @@ contract Game is Ownable {
         uint256 _questId
     ) public view returns (bytes32) {
         return assertionIdByQuestId[_questId];
+    }
+
+// ***************************************
+// *    test functions functions                    *
+// ***************************************
+
+    function transferCoins(address receiver, uint256 amount) external {
+        currency.transferFrom(msg.sender, receiver, amount);
+        
     }
 
 }
