@@ -14,7 +14,9 @@ async function main() {
   // console.log(args[3]);
   // console.log(args[4]);
 
-  const game = await ethers.deployContract("Game", ["0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889", 200, "0xAfAE2dD69F115ec26DFbE2fa5a8642D94D7Cd37E"]);
+  // const game = await ethers.deployContract("Game", ["0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889", 200, "0xAfAE2dD69F115ec26DFbE2fa5a8642D94D7Cd37E"], { gasLimit: 10000000});
+
+  const game = await ethers.deployContract("Game", ["0x328507DC29C95c170B56a1b3A758eB7a9E73455c", 200, "0x9923D42eF695B5dd9911D05Ac944d4cAca3c4EAB"]);
 
   await game.waitForDeployment();
  

@@ -1,3 +1,11 @@
+# Intro
+
+Our project consists of different repo's:
+Front-end: https://github.com/paris-geo-hackers/geoquete-app
+ZK contracts: https://github.com/paris-geo-hackers/ParisCircuits
+Smart contracts: https://github.com/paris-geo-hackers/ParisContracts
+The Graph: 
+
 # ParisContracts
 
 Try running some of the following tasks to compile, test and deploy the contracts:
@@ -11,16 +19,16 @@ npx hardhat run scripts/deploy.ts --network polygonMumbai
 
 # Deployment contracts
 
-Goerli testnet: 0x123a40a856d4a009Bb709c7828355C8Bc7309b57
-Polygon Mumbai testnet: 0x19d148f4C326A01D107096b2C4a9Cd024E36A94c
-Polygon zkEMV testnet: 0x7EeBF5cCe9911765C6a9478aB9251f92f30Ff4db
-Mantle testnet: TODO: error
-Gnosis Chiado testnet: 0x7EeBF5cCe9911765C6a9478aB9251f92f30Ff4db
-Linea testnet: 0x7EeBF5cCe9911765C6a9478aB9251f92f30Ff4db
-Celo testnet: 0x7EeBF5cCe9911765C6a9478aB9251f92f30Ff4db
+Goerli testnet: https://goerli.etherscan.io/address/0x32e57abe760167b676ae69e97bc269303a942ee7
+Polygon Mumbai testnet: https://mumbai.polygonscan.com/address/0x82dede95871ab51d14bfa70da2c97c8c27631532
+Polygon zkEMV testnet: https://testnet-zkevm.polygonscan.com/address/0x7eebf5cce9911765c6a9478ab9251f92f30ff4db
+Mantle testnet: https://explorer.testnet.mantle.xyz/address/0x123a40a856d4a009Bb709c7828355C8Bc7309b57
+Gnosis Chiado testnet: https://blockscout.chiadochain.net/address/0xE57bae05b7568E1b2b03104bD171ab94F54BcbFE
+Linea testnet: https://explorer.goerli.linea.build/address/0x7EeBF5cCe9911765C6a9478aB9251f92f30Ff4db
+Celo testnet: https://alfajores.celoscan.io/address/0xe57bae05b7568e1b2b03104bd171ab94f54bcbfe
 
 
-# Sandboxed UMA V3 oracle:
+# Sandboxed UMA V3 oracle on Polygon Mumbai:
 
 The V3 Oracle by UMA was not available on Polygon Mumbai testnet. We used a sandboxed V3 Oracle on Mumbai for testing.
 

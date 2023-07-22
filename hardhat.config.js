@@ -9,16 +9,20 @@ module.exports = {
       url: `https://goerli.infura.io/v3/${process.env.INFURA_API_KEY}`,
       accounts: [process.env.PRIVATE_KEY],
     },
+    mantle: {
+      url: 'https://rpc.mantle.xyz',
+      accounts: [process.env.PRIVATE_KEY],
+    },
+    mantleTestnet: {
+      url: 'https://rpc.testnet.mantle.xyz',
+      accounts: [process.env.PRIVATE_KEY],
+    },
     polygonMumbai: {
       url: `https://rpc.eu-north-1.gateway.fm/v4/polygon/non-archival/mumbai`,
       accounts: [process.env.PRIVATE_KEY],
     },
     zkEVMtestnet: {
       url: `https://rpc.public.zkevm-test.net`,
-      accounts: [process.env.PRIVATE_KEY],
-    },
-    mantle: {
-      url: 'https://rpc.testnet.mantle.xyz',
       accounts: [process.env.PRIVATE_KEY],
     },
     chiado: {
@@ -38,7 +42,8 @@ module.exports = {
   },
   etherscan: {
     apiKey: {
-      goerli: process.env.POLYGON_API_KEY,
+      goerli: process.env.ETHERSCAN_API_KEY,
+      chiado: process.env.ETHERSCAN_API_KEY,
       polygonMumbai: process.env.POLYGON_API_KEY,
       mantle: process.env.MANTLE_API_KEY,
     },
@@ -55,7 +60,6 @@ module.exports = {
         network: "chiado",
         chainId: 10200,
         urls: {
-          //Blockscout
           apiURL: "https://blockscout.com/gnosis/chiado/api",
           browserURL: "https://blockscout.com/gnosis/chiado",
         },
