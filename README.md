@@ -1,10 +1,9 @@
 # Intro
 
 Our project consists of different repo's:
-Front-end: https://github.com/paris-geo-hackers/geoquete-app
-ZK contracts: https://github.com/paris-geo-hackers/ParisCircuits
-Smart contracts: https://github.com/paris-geo-hackers/ParisContracts
-The Graph: 
+- Front-end: https://github.com/paris-geo-hackers/geoquete-app
+- ZK circuits: https://github.com/paris-geo-hackers/ParisCircuits
+- Smart contracts: https://github.com/paris-geo-hackers/ParisContracts
 
 # ParisContracts
 
