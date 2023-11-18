@@ -69,11 +69,11 @@ module.exports = {
         },
       },
       {
-        network: "zkEVMtestnet",
+        network: "alfajores",
         chainId: 1442,
         urls: {
           apiURL: "https://rpc.public.zkevm-test.net",
-          browserURL: "https://testnet-zkevm.polygonscan.com",
+          browserURL: "https://alfajores.celoscan.io",
         },
       },
     ],
